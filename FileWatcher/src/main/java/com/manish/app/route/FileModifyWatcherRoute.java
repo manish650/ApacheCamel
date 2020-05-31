@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -13,17 +12,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FileWatcherRoute extends RouteBuilder {
+public class FileModifyWatcherRoute extends RouteBuilder {
 
 	@Value("${watecherFolderPath}")
 	String hazelcastConfiglocation;
 	private static final String FILENAME = "sampleFile.txt";
+	private static final String EVENT="MODIFY";//CREATE,DELETE,MODIFY
 
 
 
 	@Override
 	public void configure() throws Exception {
-		from("file-watch:" + hazelcastConfiglocation + "?events=MODIFY&recursive=false")
+		from("file-watch:" + hazelcastConfiglocation + "?events="+EVENT+"&recursive=false")
 
 				.process(new Processor() {
 					@Override
